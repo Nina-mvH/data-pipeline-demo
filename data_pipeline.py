@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field, ConfigDict
 import csv
 from typing import Optional
+from sqlalchemy import create_engine, Column, Integer, String, Float, Date
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 #defining the pydantic model with all columns represented
 class Case(BaseModel):
@@ -59,11 +62,91 @@ class Case(BaseModel):
     forgiveness_amount: Optional[str] = Field(None, alias="ForgivenessAmount")
     forgiveness_date: str = Field(..., alias="ForgivenessDate")
 
+Base = declarative_base()
+
+class CaseDB(Base):
+    __tablename__='PPP_data'
+    loan_number: Column(Integer, primary_key=True) 
+    date_approved: Column(String)
+    SBA_office_code: Column(Integer)
+    processing_method: Column(String)
+    borrower_name: Column(String)
+    borrower_address: Column(String)
+    borrower_city: Column(String)
+    borrower_state: Column(String)
+    borrower_zip: Column(String)
+    loan_status_date: Column(String)
+    loan_status: Column(String)
+    term: Column(Integer)
+    SBA_guaranty_percentage: Column(Float)
+    initial_approval_amount: Column(Float)
+    current_approval_amount: Column(Float)
+    undisburded_amount: Column(String)
+    franchise_name: Column(String)
+    servicing_lender_location_id: Column(Integer)
+    servicing_lender_name: Column(String)
+    servicing_lender_address: Column(String)
+    serviceing_lender_city: Column(String)
+    servicing_lender_state: Column(String)
+    servicing_lender_zip: Column(String)
+    rural_urban_indicator: Column(String)
+    hubzone_indicator: Column(String)
+    LMI_indicator: Column(String)
+    business_age_description: Column(String) 
+    project_city: Column(String)
+    project_county_name: Column(String)
+    project_state: Column(String)
+    project_zip: Column(String)
+    cd: Column(String)
+    jobs_reported: Column(String)
+    NAICS_code: Column(String)
+    race: Column(String)
+    ethnicity: Column(String)
+    utilities_proceed: Column(String) 
+    payroll_proceed: Column(String)
+    mortgage_interest_proceed: Column(String)
+    rent_proceed: Column(String)
+    refinance_eidl_proceed: Column(String)
+    health_care_proceed: Column(String)
+    debt_interest_proceed: Column(String)
+    buisness_type: Column(String)
+    originating_lender_location_id: Column(String)
+    originating_lender: Column(String)
+    originating_lender_city: Column(String)
+    originating_lender_state: Column(String)
+    gender: Column(String)
+    veteran: Column(String)
+    non_profit: Column(String)
+    forgiveness_amount: Column(String)
+    forgiveness_date: Column(String)
+
+
+
+
+
+DATABASE_URL = "mysql+pymysql://nvhoo:pass@localhost:3306/PPP_data"
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(bind=engine)
+Base.matadata.create_all(engine)
+
+
 #read the csv file 
 with open('public_150k_plus_240930-small.csv', newline='', encoding="cp850") as csvfile:
     reader = csv.DictReader(csvfile)
     records = []
     for record in reader:
-        records.append(Case(**record))
+       # print(record)
+       # records.append(Case(**record))
+        case = Case(**record)
+        # db_entry = Case(**case.dict())
+        records.append(case)
 
-print(records)
+#DATABASE_URL = "mysql+pymysql://nvhoo:pass@localhost:3306/PPP_data"
+#engine = create_engine(DATABASE_URL)
+#SessionLocal = sessionmaker(bind=engine)
+session = SessionLocal()
+session.bulk_save_objects(records)
+session.commit()
+session.close()
+#Base.metadata.create_all(engine)
+print('Hello world')
