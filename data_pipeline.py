@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field, ConfigDict
 import csv
 from typing import Optional
 from sqlalchemy import create_engine, Column, Integer, String, Float, Date
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+#from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column
 
 #defining the pydantic model with all columns represented
 class Case(BaseModel):
@@ -62,91 +62,100 @@ class Case(BaseModel):
     forgiveness_amount: Optional[str] = Field(None, alias="ForgivenessAmount")
     forgiveness_date: str = Field(..., alias="ForgivenessDate")
 
-Base = declarative_base()
+#Base = declarative_base()
+class Base(DeclarativeBase):
+    pass
 
 class CaseDB(Base):
     __tablename__='PPP_data'
-    loan_number: Column(Integer, primary_key=True) 
-    date_approved: Column(String)
-    SBA_office_code: Column(Integer)
-    processing_method: Column(String)
-    borrower_name: Column(String)
-    borrower_address: Column(String)
-    borrower_city: Column(String)
-    borrower_state: Column(String)
-    borrower_zip: Column(String)
-    loan_status_date: Column(String)
-    loan_status: Column(String)
-    term: Column(Integer)
-    SBA_guaranty_percentage: Column(Float)
-    initial_approval_amount: Column(Float)
-    current_approval_amount: Column(Float)
-    undisburded_amount: Column(String)
-    franchise_name: Column(String)
-    servicing_lender_location_id: Column(Integer)
-    servicing_lender_name: Column(String)
-    servicing_lender_address: Column(String)
-    serviceing_lender_city: Column(String)
-    servicing_lender_state: Column(String)
-    servicing_lender_zip: Column(String)
-    rural_urban_indicator: Column(String)
-    hubzone_indicator: Column(String)
-    LMI_indicator: Column(String)
-    business_age_description: Column(String) 
-    project_city: Column(String)
-    project_county_name: Column(String)
-    project_state: Column(String)
-    project_zip: Column(String)
-    cd: Column(String)
-    jobs_reported: Column(String)
-    NAICS_code: Column(String)
-    race: Column(String)
-    ethnicity: Column(String)
-    utilities_proceed: Column(String) 
-    payroll_proceed: Column(String)
-    mortgage_interest_proceed: Column(String)
-    rent_proceed: Column(String)
-    refinance_eidl_proceed: Column(String)
-    health_care_proceed: Column(String)
-    debt_interest_proceed: Column(String)
-    buisness_type: Column(String)
-    originating_lender_location_id: Column(String)
-    originating_lender: Column(String)
-    originating_lender_city: Column(String)
-    originating_lender_state: Column(String)
-    gender: Column(String)
-    veteran: Column(String)
-    non_profit: Column(String)
-    forgiveness_amount: Column(String)
-    forgiveness_date: Column(String)
 
-
+    loan_number: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=False)
+    date_approved: Mapped[str] = mapped_column(String(20))
+    SBA_office_code: Mapped[int] = mapped_column(Integer)
+    processing_method: Mapped[str] = mapped_column(String(50))
+    borrower_name: Mapped[str] = mapped_column(String(255))
+    borrower_address: Mapped[str] = mapped_column(String(255))
+    borrower_city: Mapped[str] = mapped_column(String(100))
+    borrower_state: Mapped[str] = mapped_column(String(10))
+    borrower_zip: Mapped[str] = mapped_column(String(20))
+    loan_status_date: Mapped[str] = mapped_column(String(20))
+    loan_status: Mapped[str] = mapped_column(String(50))
+    term: Mapped[int] = mapped_column(Integer)
+    SBA_guaranty_percentage: Mapped[float] = mapped_column(Float)
+    initial_approval_amount: Mapped[float] = mapped_column(Float)
+    current_approval_amount: Mapped[float] = mapped_column(Float)
+    undisburded_amount: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    franchise_name: Mapped[str] = mapped_column(String(255))
+    servicing_lender_location_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    servicing_lender_name: Mapped[str] = mapped_column(String(255))
+    servicing_lender_address: Mapped[str] = mapped_column(String(255))
+    serviceing_lender_city: Mapped[str] = mapped_column(String(100))
+    servicing_lender_state: Mapped[str] = mapped_column(String(10))
+    servicing_lender_zip: Mapped[str] = mapped_column(String(20))
+    rural_urban_indicator: Mapped[str] = mapped_column(String(50))
+    hubzone_indicator: Mapped[str] = mapped_column(String(50))
+    LMI_indicator: Mapped[str] = mapped_column(String(50))
+    business_age_description: Mapped[str] = mapped_column(String(255))
+    project_city: Mapped[str] = mapped_column(String(100))
+    project_county_name: Mapped[str] = mapped_column(String(255))
+    project_state: Mapped[str] = mapped_column(String(10))
+    project_zip: Mapped[str] = mapped_column(String(20))
+    cd: Mapped[str] = mapped_column(String(50))
+    jobs_reported: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    NAICS_code: Mapped[str] = mapped_column(String(50))
+    race: Mapped[str] = mapped_column(String(50))
+    ethnicity: Mapped[str] = mapped_column(String(50))
+    utilities_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    payroll_proceed: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    mortgage_interest_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    rent_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    refinance_eidl_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    health_care_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    debt_interest_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    buisness_type: Mapped[str] = mapped_column(String(255))
+    originating_lender_location_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    originating_lender: Mapped[str] = mapped_column(String(255))
+    originating_lender_city: Mapped[str] = mapped_column(String(100))
+    originating_lender_state: Mapped[str] = mapped_column(String(10))
+    gender: Mapped[str] = mapped_column(String(50))
+    veteran: Mapped[str] = mapped_column(String(50))
+    non_profit: Mapped[str] = mapped_column(String(50))
+    forgiveness_amount: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    forgiveness_date: Mapped[str] = mapped_column(String(20))
 
 
 
 DATABASE_URL = "mysql+pymysql://nvhoo:pass@localhost:3306/PPP_data"
+#DATABASE_URL = "mysql+mysqlconnector://nvhoo:pass@localhost/PPP_data"
+
+
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
-Base.matadata.create_all(engine)
-
+Base.metadata.create_all(engine)
+session = SessionLocal()
 
 #read the csv file 
 with open('public_150k_plus_240930-small.csv', newline='', encoding="cp850") as csvfile:
     reader = csv.DictReader(csvfile)
     records = []
     for record in reader:
+        case_data = Case(**record)
+        case_orm = CaseDB(**case_data.model_dump())
+        records.append(case_orm)
+    session.bulk_save_objects(records)
+    session.commit()
        # print(record)
        # records.append(Case(**record))
-        case = Case(**record)
+        #case = Case(**record)
         # db_entry = Case(**case.dict())
-        records.append(case)
+       # records.append(case)
 
 #DATABASE_URL = "mysql+pymysql://nvhoo:pass@localhost:3306/PPP_data"
 #engine = create_engine(DATABASE_URL)
 #SessionLocal = sessionmaker(bind=engine)
-session = SessionLocal()
-session.bulk_save_objects(records)
-session.commit()
+#session = SessionLocal()
+#session.bulk_save_objects(records)
+#session.commit()
 session.close()
 #Base.metadata.create_all(engine)
 print('Hello world')
