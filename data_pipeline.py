@@ -136,8 +136,8 @@ with open('public_150k_plus_240930-small.csv', newline='', encoding="cp850") as 
     reader = csv.DictReader(csvfile)
     records = []
     for i, record in enumerate(reader):
-        if i == 0:
-            continue
+        #if i == 0:
+        #    continue
         case_data = Case(**record)
         case_dict = case_data.model_dump()
         case_dict["date_approved"] = datetime.strptime(case_dict["date_approved"], "%m/%d/%Y").date()
