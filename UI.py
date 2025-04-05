@@ -18,28 +18,33 @@ def index():
     query = session.query(CaseDB)
     results = []
     num_results = 0
+    error_message = None
 
     if request.method == 'POST':
         loan_number = request.form.get('loan_number')
         borrower_name = request.form.get('borrower_name')
         sort_by = request.form.get('sort_by')
 
-        if loan_number:
-            query = query.filter(CaseDB.loan_number == int(loan_number))
-        elif borrower_name:
-            query = query.filter(CaseDB.borrower_name.ilike(f"%{borrower_name}%"))
+        try:
+            if loan_number:
+                query = query.filter(CaseDB.loan_number == int(loan_number))
+            elif borrower_name:
+                query = query.filter(CaseDB.borrower_name.ilike(f"%{borrower_name}%"))
 
-        if sort_by == 'name_asc':
-            query = query.order_by(asc(CaseDB.borrower_name))
-        elif sort_by == 'name_desc':
-            query = query.order_by(desc(CaseDB.borrower_name))
-        elif sort_by == 'date_asc':
-            query = query.order_by(asc(CaseDB.date_approved))
-        elif sort_by == 'date_desc':
-            query = query.order_by(desc(CaseDB.date_approved))
-        results = query.all()
-        num_results = len(results)
+            if sort_by == 'name_asc':
+                query = query.order_by(asc(CaseDB.borrower_name))
+            elif sort_by == 'name_desc':
+                query = query.order_by(desc(CaseDB.borrower_name))
+            elif sort_by == 'date_asc':
+                query = query.order_by(asc(CaseDB.date_approved))
+            elif sort_by == 'date_desc':
+                query = query.order_by(desc(CaseDB.date_approved))
 
+            results = query.all()
+            num_results = len(results)
+
+        except ValueError:
+            error_message = "Loan number must be a valid number."
 
     session.close()
     return render_template('index.html', results=results, num_results=num_results)

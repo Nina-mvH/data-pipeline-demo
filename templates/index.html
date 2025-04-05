@@ -48,6 +48,11 @@
     {% elif request.method == 'POST' %}
    	 <p><strong>No results found.</strong></p>
     {% endif %}
+    
+    {% if error_message %}
+    	<p style="color: red;"><strong>Please input a valid search</strong></p>
+    {% endif %}
+
 </body>
 </html>
 
