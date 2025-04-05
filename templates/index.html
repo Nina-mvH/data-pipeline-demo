@@ -23,11 +23,8 @@
     	<button type="submit">Search</button>
 </form>
     {% if results %}
+    	<h2>Results:</h2>
 	<p><strong>Found {{ num_results }} result{{ 's' if num_results != 1 else '' }}</strong></p>
-    {% endif %}
-
-    {% if results %}
-        <h2>Results:</h2>
         <table border="1">
             <tr>
                 <th>Loan Number</th>
@@ -48,6 +45,8 @@
             </tr>
             {% endfor %}
         </table>
+    {% elif request.method == 'POST' %}
+   	 <p><strong>No results found.</strong></p>
     {% endif %}
 </body>
 </html>
