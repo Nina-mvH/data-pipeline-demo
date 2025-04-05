@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field, ConfigDict
 import csv
 from typing import Optional
 from sqlalchemy import create_engine, Column, Integer, String, Float, Date, insert, BigInteger
-#from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column
 
 #defining the pydantic model with all columns represented
@@ -23,12 +22,12 @@ class Case(BaseModel):
     SBA_guaranty_percentage: float = Field(..., alias="SBAGuarantyPercentage")
     initial_approval_amount: float = Field(..., alias="InitialApprovalAmount")
     current_approval_amount: float = Field(..., alias="CurrentApprovalAmount")
-    undisburded_amount: Optional[str] = Field(None, alias="UndisbursedAmount")
+    undisbursed_amount: Optional[str] = Field(None, alias="UndisbursedAmount")
     franchise_name: str = Field(..., alias="FranchiseName")
     servicing_lender_location_id: Optional[int] = Field(None, alias="ServicingLenderLocationId")
     servicing_lender_name: str = Field(..., alias="ServicingLenderName")
     servicing_lender_address: str = Field(..., alias="ServicingLenderAddress")
-    serviceing_lender_city: str = Field(..., alias="ServicingLenderCity")
+    servicing_lender_city: str = Field(..., alias="ServicingLenderCity")
     servicing_lender_state: str = Field(..., alias="ServicingLenderState")
     servicing_lender_zip: str = Field(..., alias="ServicingLenderZip")
     rural_urban_indicator: str = Field(..., alias="RuralUrbanIndicator")
@@ -51,7 +50,7 @@ class Case(BaseModel):
     refinance_eidl_proceed: Optional[str] = Field(None, alias="RefinanceEIDLProceed")
     health_care_proceed: Optional[str] = Field(None, alias="HealthCareProceed")
     debt_interest_proceed: Optional[str] = Field(None, alias="DebtInterestProceed")
-    buisness_type: str = Field(..., alias="BusinessType")
+    business_type: str = Field(..., alias="BusinessType")
     originating_lender_location_id: Optional[int] = Field(None, alias="OriginatingLenderLocationId")
     originating_lender: str = Field(..., alias="OriginatingLender")
     originating_lender_city: str = Field(..., alias="OriginatingLenderCity")
@@ -67,7 +66,7 @@ class Base(DeclarativeBase):
     pass
 
 class CaseDB(Base):
-    __tablename__='PPP_data'
+    __tablename__='PPP_table'
 
     loan_number: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=False)
     date_approved: Mapped[str] = mapped_column(String(20))
@@ -84,12 +83,12 @@ class CaseDB(Base):
     SBA_guaranty_percentage: Mapped[float] = mapped_column(Float)
     initial_approval_amount: Mapped[float] = mapped_column(Float)
     current_approval_amount: Mapped[float] = mapped_column(Float)
-    undisburded_amount: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    undisbursed_amount: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     franchise_name: Mapped[str] = mapped_column(String(255))
     servicing_lender_location_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     servicing_lender_name: Mapped[str] = mapped_column(String(255))
     servicing_lender_address: Mapped[str] = mapped_column(String(255))
-    serviceing_lender_city: Mapped[str] = mapped_column(String(100))
+    servicing_lender_city: Mapped[str] = mapped_column(String(100))
     servicing_lender_state: Mapped[str] = mapped_column(String(10))
     servicing_lender_zip: Mapped[str] = mapped_column(String(20))
     rural_urban_indicator: Mapped[str] = mapped_column(String(50))
@@ -112,7 +111,7 @@ class CaseDB(Base):
     refinance_eidl_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     health_care_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     debt_interest_proceed: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    buisness_type: Mapped[str] = mapped_column(String(255))
+    business_type: Mapped[str] = mapped_column(String(255))
     originating_lender_location_id: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     originating_lender: Mapped[str] = mapped_column(String(255))
     originating_lender_city: Mapped[str] = mapped_column(String(100))
@@ -123,11 +122,7 @@ class CaseDB(Base):
     forgiveness_amount: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     forgiveness_date: Mapped[str] = mapped_column(String(20))
 
-
-
 DATABASE_URL = "mysql+pymysql://nvhoo:pass@localhost:3306/PPP_data"
-#DATABASE_URL = "mysql+mysqlconnector://nvhoo:pass@localhost/PPP_data"
-
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
@@ -144,22 +139,7 @@ with open('public_150k_plus_240930-small.csv', newline='', encoding="cp850") as 
         case_data = Case(**record)
         case_orm = CaseDB(**case_data.model_dump())
         session.add(case_orm)
-        # records.append(case_orm)
-    # session.add_all(records)
-    #session.bulk_save_objects(records)
-       # print(record)
-       # records.append(Case(**record))
-        #case = Case(**record)
-        # db_entry = Case(**case.dict())
-       # records.append(case)
+        # print(case_data.model_dump())
     session.commit()
 
-#DATABASE_URL = "mysql+pymysql://nvhoo:pass@localhost:3306/PPP_data"
-#engine = create_engine(DATABASE_URL)
-#SessionLocal = sessionmaker(bind=engine)
-#session = SessionLocal()
-#session.bulk_save_objects(records)
-#session.commit()
 session.close()
-#Base.metadata.create_all(engine)
-print('Hello world')
