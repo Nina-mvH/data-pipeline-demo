@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PPP Loan Search</title>
+</head>
+<body>
+    <h1>Search PPP Loan Database</h1>
+    <form method="POST">
+        <label>Loan Number: <input type="text" name="loan_number"></label><br>
+        <label>Borrower Name: <input type="text" name="borrower_name"></label><br>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <h2>Results:</h2>
+        <table border="1">
+            <tr>
+                <th>Loan Number</th>
+                <th>Borrower Name</th>
+                <th>Borrower City</th>
+                <th>Initial Approval Amount</th>
+                <th>Loan Status</th>
+            </tr>
+            {% for row in results %}
+            <tr>
+                <td>{{ row.loan_number }}</td>
+                <td>{{ row.borrower_name }}</td>
+                <td>{{ row.borrower_city }}</td>
+                <td>${{ "{:,.2f}".format(row.initial_approval_amount) }}</td>
+                <td>{{ row.loan_status }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</body>
+</html>
+
