@@ -17,6 +17,7 @@ def index():
     session = SessionLocal()
     query = session.query(CaseDB)
     results = []
+    num_results = 0
 
     if request.method == 'POST':
         loan_number = request.form.get('loan_number')
@@ -37,10 +38,11 @@ def index():
         elif sort_by == 'date_desc':
             query = query.order_by(desc(CaseDB.date_approved))
         results = query.all()
+        num_results = len(results)
 
 
     session.close()
-    return render_template('index.html', results=results)
+    return render_template('index.html', results=results, num_results=num_results)
 
 if __name__=="__main__":
     app.run(debug=True)

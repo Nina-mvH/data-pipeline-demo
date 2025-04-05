@@ -23,6 +23,10 @@
     	<button type="submit">Search</button>
 </form>
     {% if results %}
+	<p><strong>Found {{ num_results }} result{{ 's' if num_results != 1 else '' }}</strong></p>
+    {% endif %}
+
+    {% if results %}
         <h2>Results:</h2>
         <table border="1">
             <tr>

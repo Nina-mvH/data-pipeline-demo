@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, ConfigDict
 import csv
+from datetime import datetime
 from typing import Optional
 from sqlalchemy import create_engine, Column, Integer, String, Float, Date, insert, BigInteger
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column
@@ -69,7 +70,8 @@ class CaseDB(Base):
     __tablename__='PPP_table'
 
     loan_number: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=False)
-    date_approved: Mapped[str] = mapped_column(String(20))
+    #date_approved: Mapped[str] = mapped_column(String(20))
+    date_approved: Mapped[str] = mapped_column(Date)
     SBA_office_code: Mapped[int] = mapped_column(Integer)
     processing_method: Mapped[str] = mapped_column(String(50))
     borrower_name: Mapped[str] = mapped_column(String(255))
@@ -137,9 +139,11 @@ with open('public_150k_plus_240930-small.csv', newline='', encoding="cp850") as 
         if i == 0:
             continue
         case_data = Case(**record)
-        case_orm = CaseDB(**case_data.model_dump())
+        case_dict = case_data.model_dump()
+        case_dict["date_approved"] = datetime.strptime(case_dict["date_approved"], "%m/%d/%Y").date()
+        case_orm=CaseDB(**case_dict)
+        #case_orm = CaseDB(**case_data.model_dump())
         session.add(case_orm)
-        # print(case_data.model_dump())
     session.commit()
 
 session.close()
