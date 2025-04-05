@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict
 import csv
 from typing import Optional
-from sqlalchemy import create_engine, Column, Integer, String, Float, Date
+from sqlalchemy import create_engine, Column, Integer, String, Float, Date, insert, BigInteger
 #from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column
 
@@ -69,7 +69,7 @@ class Base(DeclarativeBase):
 class CaseDB(Base):
     __tablename__='PPP_data'
 
-    loan_number: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=False)
+    loan_number: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=False)
     date_approved: Mapped[str] = mapped_column(String(20))
     SBA_office_code: Mapped[int] = mapped_column(Integer)
     processing_method: Mapped[str] = mapped_column(String(50))
@@ -138,17 +138,21 @@ session = SessionLocal()
 with open('public_150k_plus_240930-small.csv', newline='', encoding="cp850") as csvfile:
     reader = csv.DictReader(csvfile)
     records = []
-    for record in reader:
+    for i, record in enumerate(reader):
+        if i == 0:
+            continue
         case_data = Case(**record)
         case_orm = CaseDB(**case_data.model_dump())
-        records.append(case_orm)
-    session.bulk_save_objects(records)
-    session.commit()
+        session.add(case_orm)
+        # records.append(case_orm)
+    # session.add_all(records)
+    #session.bulk_save_objects(records)
        # print(record)
        # records.append(Case(**record))
         #case = Case(**record)
         # db_entry = Case(**case.dict())
        # records.append(case)
+    session.commit()
 
 #DATABASE_URL = "mysql+pymysql://nvhoo:pass@localhost:3306/PPP_data"
 #engine = create_engine(DATABASE_URL)
