@@ -7,17 +7,28 @@
 <body>
     <h1>Search PPP Loan Database</h1>
     <form method="POST">
-        <label>Loan Number: <input type="text" name="loan_number"></label><br>
-        <label>Borrower Name: <input type="text" name="borrower_name"></label><br>
-        <button type="submit">Search</button>
-    </form>
+    	<label>Loan Number: <input type="text" name="loan_number" value="{{ request.form.loan_number }}"></label><br>
+    	<label>Borrower Name: <input type="text" name="borrower_name" value="{{ request.form.borrower_name }}"></label><br>
 
+    	<label>Sort by:
+        	<select name="sort_by">
+            	<option value="">-- Select --</option>
+            	<option value="name_asc" {% if request.form.sort_by == 'name_asc' %}selected{% endif %}>Borrower Name (A-Z)</option>
+            	<option value="name_desc" {% if request.form.sort_by == 'name_desc' %}selected{% endif %}>Borrower Name (Z-A)</option>
+            	<option value="date_asc" {% if request.form.sort_by == 'date_asc' %}selected{% endif %}>Date Approved (Oldest)</option>
+            	<option value="date_desc" {% if request.form.sort_by == 'date_desc' %}selected{% endif %}>Date Approved (Newest)</option>
+        	</select>
+    	</label><br>
+
+    	<button type="submit">Search</button>
+</form>
     {% if results %}
         <h2>Results:</h2>
         <table border="1">
             <tr>
                 <th>Loan Number</th>
                 <th>Borrower Name</th>
+		<th>Date Approved</th>
                 <th>Borrower City</th>
                 <th>Initial Approval Amount</th>
                 <th>Loan Status</th>
@@ -26,6 +37,7 @@
             <tr>
                 <td>{{ row.loan_number }}</td>
                 <td>{{ row.borrower_name }}</td>
+		<td>{{ row.date_approved }}</td>
                 <td>{{ row.borrower_city }}</td>
                 <td>${{ "{:,.2f}".format(row.initial_approval_amount) }}</td>
                 <td>{{ row.loan_status }}</td>
