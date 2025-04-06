@@ -1,5 +1,5 @@
 # Overview
-The provided code 1) reads in all the data from "public_150k_plus_240930-small.csv" and uses a pydantic model to map the data to strongly types models. Then 2) the data is stored in a MySQL table (PPP_table) in the database PPP_data. This data can be exlopred using MySQL, or 3) the file UI.py can be used to run a local flask application allowing the data to be searched by loan_number or borrower_name. Reuslts can be ordered alphabetically or by date_approved.
+The provided code 1) reads in data from PPP FOIA csvs (downloadable at https://data.sba.gov/dataset/ppp-foia/resource/c1275a03-c25c-488a-bd95-403c4b2fa036?inner_span=True ) and uses a pydantic model to map the data to strongly types models. Then 2) the data is stored in a MySQL table (PPP_table) in the database PPP_data. This data can be exlopred using MySQL, or 3) the file UI.py can be used to run a local flask application allowing the data to be searched by loan_number or borrower_name. Reuslts can be ordered alphabetically or by date_approved.
 
 # How to Run Locally
 In order to run this locally, you are going to need to download the following files: data_pipeline.py, make_table.sql, run,sh, UI.py, and templates/index.html. Once you have these files, take the following steps to modify the code to your needs and run it... 
