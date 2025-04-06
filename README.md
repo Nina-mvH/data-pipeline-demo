@@ -2,7 +2,7 @@
 The provided code 1) reads in data from PPP FOIA csvs (downloadable at https://data.sba.gov/dataset/ppp-foia/resource/c1275a03-c25c-488a-bd95-403c4b2fa036?inner_span=True ) and uses a pydantic model to map the data to strongly types models. Then 2) the data is stored in a MySQL table (PPP_table) in the database PPP_data. This data can be exlopred using MySQL, or 3) the file UI.py can be used to run a local flask application allowing the data to be searched by loan_number or borrower_name. Reuslts can be ordered alphabetically or by date_approved.
 
 # How to Run Locally
-In order to run this locally, you are going to need to download the following files: data_pipeline.py, make_table.sql, run,sh, UI.py, and templates/index.html. Once you have these files, take the following steps to modify the code to your needs and run it... 
+In order to run this locally, you are going to need to download the following files: data_pipeline.py, make_table.sql, run,sh, UI.py, and templates/index.html. Once you have these files and a csv file, take the following steps to modify the code to your needs and run it. *It's important to note that reading in one of the original csvs is time consuming; my virtual machine crashed when doing this, so I only used the top 10,000 lines from one of the csvs. If you're working with computational limiations, consider decreasing the size of the csv you're working with. Additionally, if you use a different csv than the one I did and run into a parsing error, it might be because I did not list that column data as optional and should be an easy fix.*
 
 ## Download necessary packages:
 The packages I have in my virtual environment include: 
