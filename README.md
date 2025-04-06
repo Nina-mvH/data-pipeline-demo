@@ -38,13 +38,13 @@ The packages I have in my virtual environment include:
 To create a MySQL Database, follow these steps:
 - log into MySQL with your username and password, if you do not have a username or password you can make one
 > sudo mysql
-> CREATE USER 'username'@'host' IDENTIFIED BY 'password'; //host = localhost
-- You should be able to log in using
+> CREATE USER 'yourusername'@'host' IDENTIFIED BY 'yourpassword'; //host = localhost
+- You should now be able to log in
 > mysql --password
 - Once you're logged into MySQL, create your database
 > CREATE DATABASE databasename;
 - Make sure you have all the privledges for this database
-> GRANT PRIVILEGE ON databasename.* TO 'username'@'host';
+> GRANT PRIVILEGE ON databasename.* TO 'yourusername'@'host';
 
 ## Make file edits as needed
 These edits will likely include changing the name of the csv file you want to read and the database url. Currently, only a select few data columns are displayed in the flask web application and you can also change what columns you want displayed. Consider changing the following:
