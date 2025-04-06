@@ -1,7 +1,7 @@
-###Overview
+# Overview
 The provided code 1) reads in all the data from "public_150k_plus_240930-small.csv" and uses a pydantic model to map the data to strongly types models. Then 2) the data is stored in a MySQL table (PPP_table) in the database PPP_data. This data can be exlopred using MySQL, or 3) the file UI.py can be used to run a local flask application allowing the data to be searched by loan_number or borrower_name. Reuslts can be ordered alphabetically or by date_approved.
 
-###How to Run Locally
+# How to Run Locally
 In order to run this locally, you are going to need to download the following files: data_pipeline.py, make_table.sql, run,sh, UI.py, and templates/index.html. Once you have these files, take the following steps to modify the code to your needs and run it... 
 
 ## Download necessary packages:
@@ -38,19 +38,19 @@ do that
 ## Make file edits as needed
 These edits will likely include changing the name of the csv file you want to read and the database url. Consider changing the following:
 
-# In make_table.sql
+### In make_table.sql
 - update "PPP_table" to the name of your database table (lines 1, 2)
 
-# In data_pipeline.py
+### In data_pipeline.py
 - update "PPP_table" to the name of your database table (line 70)
 - update "DATABASE_URL" to be "mysql+pymsql://*yourname*:*yourpassword*@localhost:3306/*yourdatabasename*" (line 127)
 - update 'public_150k_plus_240930-small.csv' to the csv file name you want to read in (line 135)
 
-# In run.sh
+### In run.sh
 - change "PPP_data" to your database name
 - update "./venv/bin/python3" depending on your use of a virtual environment or lack thereof
 
-# In UI.py
+### In UI.py
 - update "DATABASE_URL" to be "mysql+pymsql://*yourname*:*yourpassword*@localhost:3306/*yourdatabasename*" (line 11)
 
 ## Start Running
