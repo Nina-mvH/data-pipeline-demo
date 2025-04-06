@@ -1,7 +1,9 @@
 
 ## Packages Used:
 annotated-types   0.7.0
+
 blinker           1.9.0
+
 cffi              1.17.1
 click             8.1.8
 cryptography      44.0.2
