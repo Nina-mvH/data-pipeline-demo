@@ -35,7 +35,16 @@ The packages I have in my virtual environment include:
 - Werkzeug          3.1.3
 
 ## Create a MySQL Database
-do that
+To create a MySQL Database, follow these steps:
+- log into MySQL with your username and password, if you do not have a username or password you can make one
+> sudo mysql
+> CREATE USER 'username'@'host' IDENTIFIED BY 'password'; //host = localhost
+- You should be able to log in using
+> mysql --password
+- Once you're logged into MySQL, create your database
+> CREATE DATABASE databasename;
+- Make sure you have all the privledges for this database
+> GRANT PRIVILEGE ON databasename.* TO 'username'@'host';
 
 ## Make file edits as needed
 These edits will likely include changing the name of the csv file you want to read and the database url. Currently, only a select few data columns are displayed in the flask web application and you can also change what columns you want displayed. Consider changing the following:
