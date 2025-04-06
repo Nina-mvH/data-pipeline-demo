@@ -1,17 +1,15 @@
 
 ## Packages Used:
-annotated-types   0.7.0
-
-blinker           1.9.0
-
-cffi              1.17.1
-click             8.1.8
-cryptography      44.0.2
-Flask             3.1.0
-Flask-SQLAlchemy  3.1.1
-greenlet          3.1.1
-itsdangerous      2.2.0
-Jinja2            3.1.6
+- annotated-types   0.7.0
+- blinker           1.9.0
+- cffi              1.17.1
+- click             8.1.8
+- cryptography      44.0.2
+- Flask             3.1.0
+- Flask-SQLAlchemy  3.1.1
+- greenlet          3.1.1
+- itsdangerous      2.2.0
+- Jinja2            3.1.6
 MarkupSafe        3.0.2
 mysql             0.0.3
 mysql-connector   2.2.9
