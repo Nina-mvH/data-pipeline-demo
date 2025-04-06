@@ -67,11 +67,11 @@ These edits will likely include changing the name of the csv file you want to re
 
 ## Start Running
 After you have all your packages ready and necessary file edits made, take the following steps in the terminal:
->> ./run.sh //this will prompt you to enter your database password...do that
+> ./run.sh //this will prompt you to enter your database password...do that
 
 At this point, your mySQL table should be populated and you can manually explore the data using SQL commands. If you want the simple UI...
 
->> python UI.py //this will produce a link, open that link
+> python UI.py //this will produce a link, open that link
 
 This should open a web application that will allow you to search through the data.
 
