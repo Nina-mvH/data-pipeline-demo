@@ -49,20 +49,20 @@ To create a MySQL Database, follow these steps:
 ## Make file edits as needed
 These edits will likely include changing the name of the csv file you want to read and the database url. Currently, only a select few data columns are displayed in the flask web application, and you can also change what columns you want displayed. Consider changing the following:
 
-#### In make_table.sql
+### In make_table.sql
 - update "PPP_table" to the name of your database table (lines 1, 2)
 
-#### In data_pipeline.py
+### In data_pipeline.py
 - update "PPP_table" to the name of your database table (line 70)
 - update "DATABASE_URL" to be "mysql+pymsql://*yourname*:*yourpassword*@localhost:3306/*yourdatabasename*" (line 127)
 - update 'public_150k_plus_240930-small.csv' to the csv file name you want to read in (line 135)
 - Note: 
 
-#### In run.sh
+### In run.sh
 - change "PPP_data" to your database name
 - update "./venv/bin/python3" depending on your use of a virtual environment or lack thereof
 
-#### In UI.py
+### In UI.py
 - update "DATABASE_URL" to be "mysql+pymsql://*yourname*:*yourpassword*@localhost:3306/*yourdatabasename*" (line 11)
 
 ## Start Running
